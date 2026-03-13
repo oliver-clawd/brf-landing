@@ -54,7 +54,7 @@
 /* Screen */
 .report-preview__screen {
   position: relative;
-  max-height: 620px;
+  max-height: 580px;
   overflow: hidden;
 }
 
@@ -63,34 +63,19 @@
   display: block;
   object-fit: cover;
   object-position: top center;
-  /* Crisp at top, blur increases toward bottom via mask */
-  -webkit-mask-image: linear-gradient(to bottom, black 45%, transparent 85%);
-  mask-image: linear-gradient(to bottom, black 45%, transparent 85%);
 }
 
-/* Intentional CSS blur layer — sits above the image, gets heavier toward bottom */
-.report-preview__blur {
-  position: absolute;
-  inset: 0;
-  backdrop-filter: blur(0px);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.4) 55%, black 80%);
-  mask-image: linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.4) 55%, black 80%);
-  background: transparent;
-  pointer-events: none;
-}
-
-/* Gradient fade at bottom */
+/* Clean gradient fade — starts late so most of the report is fully crisp */
 .report-preview__fade {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 320px;
+  height: 240px;
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(8,14,26,0.5) 40%,
-    rgba(8,14,26,0.96) 80%,
+    rgba(8,14,26,0.85) 60%,
     rgba(8,14,26,1) 100%
   );
   pointer-events: none;
