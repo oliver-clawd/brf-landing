@@ -34,7 +34,9 @@ export default function ReportPreview() {
               alt="BRF Sample Report — interactive security assessment"
               className="report-preview__img"
             />
-            {/* Fade overlay at bottom */}
+            {/* Intentional blur layer (CSS, not image compression) */}
+            <div className="report-preview__blur" aria-hidden="true"/>
+            {/* Solid fade at bottom */}
             <div className="report-preview__fade"/>
 
             {/* CTA overlay */}

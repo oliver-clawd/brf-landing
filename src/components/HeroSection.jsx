@@ -47,27 +47,6 @@ export default function HeroSection() {
           </a>
           <a href="#contact" className="btn btn-outline">Schedule an Assessment</a>
         </div>
-        <div className="hero__stats">
-          <div className="hero__stat">
-            <span className="hero__stat-num">20+</span>
-            <span className="hero__stat-label">Blast paths modeled</span>
-          </div>
-          <div className="hero__stat-divider"/>
-          <div className="hero__stat">
-            <span className="hero__stat-num">4</span>
-            <span className="hero__stat-label">Framework phases</span>
-          </div>
-          <div className="hero__stat-divider"/>
-          <div className="hero__stat">
-            <span className="hero__stat-num">60-day</span>
-            <span className="hero__stat-label">Remediation plan</span>
-          </div>
-          <div className="hero__stat-divider"/>
-          <div className="hero__stat">
-            <span className="hero__stat-num">0–100</span>
-            <span className="hero__stat-label">CSI score</span>
-          </div>
-        </div>
       </div>
     </section>
   );
