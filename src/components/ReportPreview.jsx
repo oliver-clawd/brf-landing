@@ -45,7 +45,9 @@ export default function ReportPreview() {
                 tabIndex="-1"
               />
             </div>
-            {/* Clean gradient fade into the CTA overlay */}
+            {/* Progressive diffused blur — backdrop-filter masked by gradient, no pixelation */}
+            <div className="report-preview__blur" aria-hidden="true"/>
+            {/* Solid fade at the very bottom into background */}
             <div className="report-preview__fade"/>
 
             {/* CTA overlay */}
