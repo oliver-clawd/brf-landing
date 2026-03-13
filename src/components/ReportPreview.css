@@ -83,37 +83,12 @@
   pointer-events: none;    /* disable interaction in the preview */
 }
 
-/*
- * Diffused progressive blur — backdrop-filter Gaussian blur masked by gradient.
- * The mask transitions from fully transparent (no blur at top) to fully opaque
- * (full blur at bottom), creating a smooth glass-diffusion effect with zero
- * pixelation (it blurs whatever is rendered behind it, not the image pixels).
- */
+/* Uniform diffused blur across the entire preview — no gradient mask */
 .report-preview__blur {
   position: absolute;
   inset: 0;
-  /* 20px is enough to feel diffused without looking like a JPEG artifact */
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  /* Mask: top 30% fully transparent (crisp) → ramps to opaque at 70% */
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    transparent 28%,
-    rgba(0,0,0,0.15) 38%,
-    rgba(0,0,0,0.5)  52%,
-    rgba(0,0,0,0.85) 65%,
-    black            78%
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    transparent 28%,
-    rgba(0,0,0,0.15) 38%,
-    rgba(0,0,0,0.5)  52%,
-    rgba(0,0,0,0.85) 65%,
-    black            78%
-  );
   pointer-events: none;
 }
 
