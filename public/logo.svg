@@ -1,0 +1,30 @@
+<svg width="405" height="164" viewBox="30 12 405 164" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500;600&amp;family=DM+Mono:wght@500&amp;display=swap');
+      .n { font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; font-size: 38px; letter-spacing: -0.5px; }
+    </style>
+  </defs>
+  <path fill="#ffffff" d="M96,20 L144,20 Q152,20 152,28 L152,100 Q152,135 124,152 L96,168 L68,152 Q40,135 40,100 L40,28 Q40,20 48,20 Z"/>
+  <circle cx="96" cy="84" r="18" fill="none" stroke="#042C53" stroke-width="1.5" opacity="0.6"/>
+  <circle cx="96" cy="84" r="28" fill="none" stroke="#042C53" stroke-width="1.2" opacity="0.4"/>
+  <circle cx="96" cy="84" r="38" fill="none" stroke="#042C53" stroke-width="0.9" opacity="0.2"/>
+  <circle cx="96" cy="84" r="5" fill="#042C53"/>
+  <line x1="96" y1="84" x2="96"  y2="41"  stroke="#042C53" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+  <line x1="96" y1="84" x2="129" y2="56"  stroke="#042C53" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+  <line x1="96" y1="84" x2="134" y2="96"  stroke="#042C53" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+  <line x1="96" y1="84" x2="111" y2="126" stroke="#042C53" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+  <line x1="96" y1="84" x2="81"  y2="126" stroke="#042C53" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+  <line x1="96" y1="84" x2="58"  y2="96"  stroke="#042C53" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+  <line x1="96" y1="84" x2="63"  y2="56"  stroke="#042C53" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+  <circle cx="96"  cy="51"  r="2.5" fill="#042C53" opacity="0.5"/>
+  <circle cx="123" cy="62"  r="2.5" fill="#042C53" opacity="0.5"/>
+  <circle cx="128" cy="94"  r="2.5" fill="#042C53" opacity="0.5"/>
+  <circle cx="108" cy="119" r="2.5" fill="#042C53" opacity="0.5"/>
+  <circle cx="84"  cy="119" r="2.5" fill="#042C53" opacity="0.5"/>
+  <circle cx="64"  cy="94"  r="2.5" fill="#042C53" opacity="0.5"/>
+  <circle cx="69"  cy="62"  r="2.5" fill="#042C53" opacity="0.5"/>
+  <text x="176" y="82"  class="n" fill="#ffffff">Secure Stack</text>
+  <text x="176" y="128" class="n" fill="#ffffff">Consulting</text>
+  <text x="178" y="158" class="s" fill="rgba(255,255,255,0.5)">BLAST RADIUS FRAMEWORK&#x2122;</text>
+</svg>

@@ -1,0 +1,125 @@
+.cta {
+  background: var(--bg);
+  border-top: 1px solid var(--border-dim);
+}
+
+.cta__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.cta__text .label { margin-bottom: 16px; }
+
+.cta__headline {
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  margin-bottom: 20px;
+}
+
+.cta__body {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  margin-bottom: 28px;
+}
+
+.cta__bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cta__bullet {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.cta__bullet svg { flex-shrink: 0; margin-top: 1px; }
+
+/* Form card */
+.cta__form-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-dim);
+  border-radius: 10px;
+  padding: 32px;
+}
+
+.cta__form-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.cta__form-sub {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+.cta__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cta__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cta__field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  letter-spacing: 0.3px;
+}
+
+.cta__optional {
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.cta__field input,
+.cta__field textarea {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-dim);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--text);
+  transition: border-color 0.15s;
+  outline: none;
+  resize: vertical;
+}
+
+.cta__field input::placeholder,
+.cta__field textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.cta__field input:focus,
+.cta__field textarea:focus {
+  border-color: var(--blue-accent);
+  background: rgba(55, 138, 221, 0.05);
+}
+
+.cta__submit { width: 100%; justify-content: center; margin-top: 4px; }
+
+@media (max-width: 900px) {
+  .cta__inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+}

@@ -1,0 +1,99 @@
+.problem__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.problem__text .label { margin-bottom: 16px; }
+
+.problem__headline {
+  font-size: clamp(24px, 3.5vw, 36px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+  margin-bottom: 24px;
+}
+
+.problem__body {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+}
+
+.problem__body em {
+  color: var(--text);
+  font-style: normal;
+  font-weight: 500;
+}
+
+.problem__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.problem__card {
+  border-radius: 8px;
+  padding: 24px;
+  border: 1px solid var(--border-dim);
+  background: var(--bg-card);
+}
+
+.problem__card--bad {
+  border-color: rgba(239, 68, 68, 0.2);
+  background: rgba(239, 68, 68, 0.04);
+}
+
+.problem__card--good {
+  border-color: rgba(55, 138, 221, 0.25);
+  background: rgba(55, 138, 221, 0.05);
+}
+
+.problem__card-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  font-family: var(--mono);
+}
+
+.problem__card--bad .problem__card-label { color: rgba(239, 68, 68, 0.8); }
+.problem__card--good .problem__card-label { color: var(--blue-accent); }
+
+.problem__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.problem__list li {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.5;
+  padding-left: 20px;
+  position: relative;
+}
+
+.problem__list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.problem__card--bad .problem__list li::before { background: rgba(239, 68, 68, 0.6); }
+.problem__card--good .problem__list li::before { background: var(--blue-accent); opacity: 0.7; }
+
+@media (max-width: 900px) {
+  .problem__grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+}

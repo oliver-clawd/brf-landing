@@ -1,0 +1,111 @@
+.report-preview { background: var(--bg); }
+
+.report-preview__frame {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border-dim);
+  box-shadow:
+    0 0 0 1px rgba(55,138,221,0.08),
+    0 32px 80px rgba(0,0,0,0.6),
+    0 0 120px rgba(55,138,221,0.06);
+}
+
+/* Browser chrome */
+.report-preview__chrome {
+  background: #0d1628;
+  border-bottom: 1px solid var(--border-dim);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.report-preview__dots {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.report-preview__dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border-dim);
+}
+
+.report-preview__url {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-dim);
+  border-radius: 4px;
+  padding: 5px 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.report-preview__url-icon { font-size: 10px; }
+
+/* Screen */
+.report-preview__screen {
+  position: relative;
+  max-height: 560px;
+  overflow: hidden;
+}
+
+.report-preview__img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: top;
+}
+
+/* Gradient fade at bottom */
+.report-preview__fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 280px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(8,14,26,0.7) 50%,
+    rgba(8,14,26,0.97) 100%
+  );
+}
+
+/* CTA overlay */
+.report-preview__overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 32px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.report-preview__overlay-text {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 420px;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .report-preview__overlay {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 20px;
+  }
+  .report-preview__screen { max-height: 400px; }
+}
