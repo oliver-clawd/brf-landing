@@ -1,7 +1,7 @@
 import './ReportPreview.css';
 import reportImg from '../assets/report-preview.jpg';
 
-const REPORT_URL = '/blast-radius-framework/report/';
+const REPORT_URL = '/blast-radius-framework/sample-report/';
 
 export default function ReportPreview() {
   return (
@@ -25,7 +25,7 @@ export default function ReportPreview() {
             </div>
             <div className="report-preview__url">
               <span className="report-preview__url-icon">🔒</span>
-              secure-stack-consulting.com/blast-radius-framework/report
+              secure-stack-consulting.com/blast-radius-framework/sample-report
             </div>
           </div>
 
