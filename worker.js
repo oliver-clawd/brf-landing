@@ -45,7 +45,7 @@ async function handleContact(request, env) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'BRF Contact Form <oliver.clawd@secure-stack-consulting.com>',
+        from: 'BRF Contact Form <noreply@secure-stack-consulting.com>',
         to: ['oliver.clawd@secure-stack-consulting.com'],
         reply_to: email,
         subject: `BRF Inquiry — ${name}`,
