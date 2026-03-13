@@ -1,28 +1,31 @@
 import { useState } from 'react';
 import './CTASection.css';
 
-const RECIPIENT = 'oliver.clawd@secure-stack-consulting.com';
-
 export default function CTASection() {
   const [fields, setFields] = useState({ name: '', email: '', scope: '', message: '' });
-  const [sent, setSent] = useState(false);
+  const [state, setState] = useState('idle'); // idle | sending | success | error
+  const [errorMsg, setErrorMsg] = useState('');
 
   const set = (k) => (e) => setFields(f => ({ ...f, [k]: e.target.value }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, email, scope, message } = fields;
+    setState('sending');
+    setErrorMsg('');
 
-    const subject = `BRF Inquiry — ${name || 'New inquiry'}`;
-    const body = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      `AWS account scope: ${scope}`,
-      message ? `\nMessage:\n${message}` : '',
-    ].filter(Boolean).join('\n');
-
-    window.location.href = `mailto:${RECIPIENT}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    setSent(true);
+    try {
+      const res = await fetch('/blast-radius-framework/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(fields),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Something went wrong.');
+      setState('success');
+    } catch (err) {
+      setErrorMsg(err.message);
+      setState('error');
+    }
   };
 
   return (
@@ -59,15 +62,14 @@ export default function CTASection() {
 
           <div className="cta__form-wrap">
             <div className="cta__form-card">
-              {sent ? (
+              {state === 'success' ? (
                 <div className="cta__success">
                   <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
                     <circle cx="20" cy="20" r="19" stroke="#378ADD" strokeWidth="1.5"/>
                     <path d="M12 20l6 6 10-12" stroke="#378ADD" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                  <h3>Email client opened</h3>
-                  <p>Your message is pre-filled and ready to send to <strong>{RECIPIENT}</strong>.</p>
-                  <button className="btn btn-ghost" onClick={() => setSent(false)}>Send another</button>
+                  <h3>Message sent</h3>
+                  <p>We'll get back to you within one business day.</p>
                 </div>
               ) : (
                 <>
@@ -92,11 +94,16 @@ export default function CTASection() {
                       <label>Message <span className="cta__optional">(optional)</span></label>
                       <textarea rows={3} placeholder="Anything specific you're trying to understand or fix?" value={fields.message} onChange={set('message')} />
                     </div>
-                    <button type="submit" className="btn btn-primary cta__submit">
-                      Send message
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
+                    {state === 'error' && (
+                      <p className="cta__error">{errorMsg}</p>
+                    )}
+                    <button type="submit" className="btn btn-primary cta__submit" disabled={state === 'sending'}>
+                      {state === 'sending' ? 'Sending…' : 'Send message'}
+                      {state !== 'sending' && (
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      )}
                     </button>
                   </form>
                 </>
