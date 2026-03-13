@@ -87,8 +87,8 @@
 .report-preview__blur {
   position: absolute;
   inset: 0;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   pointer-events: none;
 }
 
