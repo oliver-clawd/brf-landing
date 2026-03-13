@@ -64,16 +64,15 @@
   display: block;
   object-fit: cover;
   object-position: center top;
+  /* CSS filter blur applied directly to the rendered image — smooth Gaussian,
+     no pixelation regardless of source resolution, works in all browsers */
+  filter: blur(8px);
+  /* Scale slightly to prevent white edges from the blur spill */
+  transform: scale(1.04);
 }
 
-/* Uniform diffused blur — backdrop-filter blurs rendered pixels behind it, no JPEG artifacts */
-.report-preview__blur {
-  position: absolute;
-  inset: 0;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  pointer-events: none;
-}
+/* No separate blur div needed — blur is on the img itself */
+.report-preview__blur { display: none; }
 
 /* Solid colour fade at the very bottom */
 .report-preview__fade {
