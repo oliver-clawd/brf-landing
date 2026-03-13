@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="container footer__inner">
         <div className="footer__brand">
-          <img src="/logo.svg" alt="Secure Stack Consulting" className="footer__logo" />
+          <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="Secure Stack Consulting" className="footer__logo" />
           <p className="footer__tagline">
             Cloud security consulting focused on blast radius reduction,
             IAM architecture, and AWS security posture.
