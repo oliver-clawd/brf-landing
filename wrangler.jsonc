@@ -9,5 +9,11 @@
     "binding": "ASSETS",
     "not_found_handling": "single-page-application"
   },
-  "compatibility_flags": ["nodejs_compat"]
+  "compatibility_flags": ["nodejs_compat"],
+  "routes": [
+    {
+      "pattern": "secure-stack-consulting.com/blast-radius-framework*",
+      "zone_name": "secure-stack-consulting.com"
+    }
+  ]
 }
