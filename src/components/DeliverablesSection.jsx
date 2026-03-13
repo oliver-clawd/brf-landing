@@ -1,33 +1,34 @@
 import './DeliverablesSection.css';
+import { IconBlastPath, IconCSI, IconMatrix, IconTimeline, IconTopology, IconEvidence } from './DeliverableIcons';
 
 const ITEMS = [
   {
-    icon: '⬡',
+    Icon: IconBlastPath,
     title: 'Blast Path Register',
     desc: '20+ propagation paths, each scored by severity band and entry class. Every path links to evidence, affected resources, and the interventions that address it.',
   },
   {
-    icon: '◎',
+    Icon: IconCSI,
     title: 'Containment Strength Index',
     desc: 'A 0–100 score across five domains: Identity, Network, Data, Compute, and Control. Shows where your containment is holding and where it breaks down.',
   },
   {
-    icon: '≡',
+    Icon: IconMatrix,
     title: 'Ranked Intervention Matrix',
     desc: 'Every control ranked by impact-to-effort ratio, with dependency chains and projected score impact. Not a flat list — a decision surface.',
   },
   {
-    icon: '→',
+    Icon: IconTimeline,
     title: '60-Day Remediation Sequence',
     desc: 'A week-by-week plan tied to specific blast paths and interventions. Weeks 1–2 address the highest-leverage identity controls; the plan builds from there.',
   },
   {
-    icon: '◈',
+    Icon: IconTopology,
     title: 'Topology & Trust Map',
     desc: 'Interactive graph of every node, trust relationship, and privilege boundary. Filterable by zone, entry class, and blast path.',
   },
   {
-    icon: '✦',
+    Icon: IconEvidence,
     title: 'Evidence Package',
     desc: 'Every finding backed by AWS API data — IAM GetRolePolicy, CloudTrail AssumeRole events, VPC flow logs. Hash-verified and timestamped.',
   },
@@ -48,11 +49,11 @@ export default function DeliverablesSection() {
         </div>
 
         <div className="deliverables__grid">
-          {ITEMS.map((item, i) => (
+          {ITEMS.map(({ Icon, title, desc }, i) => (
             <div key={i} className="deliverables__card">
-              <div className="deliverables__icon">{item.icon}</div>
-              <h3 className="deliverables__title">{item.title}</h3>
-              <p className="deliverables__desc">{item.desc}</p>
+              <div className="deliverables__icon"><Icon /></div>
+              <h3 className="deliverables__title">{title}</h3>
+              <p className="deliverables__desc">{desc}</p>
             </div>
           ))}
         </div>
