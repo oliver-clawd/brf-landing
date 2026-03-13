@@ -1,7 +1,8 @@
 import './ReportPreview.css';
+import reportImg from '../assets/report-preview.jpg';
 
-// Dev: point to local report. Update to deployed URL before going live.
-const REPORT_URL = 'http://localhost:5173';
+// Update to the deployed report URL before going live
+const REPORT_URL = 'https://brf-report.secure-stack-consulting.workers.dev';
 
 export default function ReportPreview() {
   return (
@@ -29,25 +30,16 @@ export default function ReportPreview() {
             </div>
           </div>
 
-          {/* Live report iframe — perfectly crisp, no JPEG compression */}
-          <div className="report-preview__screen" ref={el => {
-            if (el) {
-              const scale = el.offsetWidth / 1280;
-              el.style.setProperty('--preview-scale', scale);
-            }
-          }}>
-            <div className="report-preview__iframe-wrap">
-              <iframe
-                src={REPORT_URL}
-                className="report-preview__iframe"
-                title="BRF Sample Report"
-                scrolling="no"
-                tabIndex="-1"
-              />
-            </div>
-            {/* Progressive diffused blur — backdrop-filter masked by gradient, no pixelation */}
+          {/* Topology graph screenshot — blurred as teaser */}
+          <div className="report-preview__screen">
+            <img
+              src={reportImg}
+              alt="BRF Report — topology & trust map"
+              className="report-preview__img"
+            />
+            {/* Uniform diffused blur across the entire preview */}
             <div className="report-preview__blur" aria-hidden="true"/>
-            {/* Solid fade at the very bottom into background */}
+            {/* Solid colour fade at the very bottom */}
             <div className="report-preview__fade"/>
 
             {/* CTA overlay */}
