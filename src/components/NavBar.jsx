@@ -21,7 +21,7 @@ export default function NavBar() {
     <header className={`navbar${scrolled ? ' navbar--scrolled' : ''}`}>
       <div className="container navbar__inner">
         <a href="#" className="navbar__brand">
-          <img src="/logo.svg" alt="Secure Stack Consulting" className="navbar__logo" />
+          <img src="/logo-mark.svg" alt="Secure Stack Consulting" className="navbar__logo" />
         </a>
         <nav className="navbar__links">
           {NAV_LINKS.map(l => (

@@ -54,28 +54,39 @@
 /* Screen */
 .report-preview__screen {
   position: relative;
-  max-height: 580px;
+  height: 560px;
   overflow: hidden;
 }
 
-.report-preview__img {
+/* Iframe wrapper — clips to the visible preview height */
+.report-preview__iframe-wrap {
   width: 100%;
-  display: block;
-  object-fit: cover;
-  object-position: top center;
+  height: 100%;
+  overflow: hidden;
 }
 
-/* Clean gradient fade — starts late so most of the report is fully crisp */
+/* The iframe renders the full report at actual resolution — no JPEG artifacts */
+.report-preview__iframe {
+  width: 1280px;           /* full report viewport width */
+  height: 900px;           /* how much vertical content to show */
+  border: none;
+  display: block;
+  transform-origin: top left;
+  transform: scale(var(--preview-scale, 0.9375)); /* 1200/1280 */
+  pointer-events: none;    /* disable interaction in the preview */
+}
+
+/* Clean gradient fade — only the bottom 30% fades */
 .report-preview__fade {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 240px;
+  height: 220px;
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(8,14,26,0.85) 60%,
+    rgba(8,14,26,0.8) 55%,
     rgba(8,14,26,1) 100%
   );
   pointer-events: none;

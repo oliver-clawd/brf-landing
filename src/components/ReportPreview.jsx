@@ -1,5 +1,7 @@
-import reportImg from '../assets/report-preview.jpg';
 import './ReportPreview.css';
+
+// Dev: point to local report. Update to deployed URL before going live.
+const REPORT_URL = 'http://localhost:5173';
 
 export default function ReportPreview() {
   return (
@@ -27,14 +29,23 @@ export default function ReportPreview() {
             </div>
           </div>
 
-          {/* Report screenshot */}
-          <div className="report-preview__screen">
-            <img
-              src={reportImg}
-              alt="BRF Sample Report — interactive security assessment"
-              className="report-preview__img"
-            />
-            {/* Clean gradient fade — no blur, just a fade into the CTA */}
+          {/* Live report iframe — perfectly crisp, no JPEG compression */}
+          <div className="report-preview__screen" ref={el => {
+            if (el) {
+              const scale = el.offsetWidth / 1280;
+              el.style.setProperty('--preview-scale', scale);
+            }
+          }}>
+            <div className="report-preview__iframe-wrap">
+              <iframe
+                src={REPORT_URL}
+                className="report-preview__iframe"
+                title="BRF Sample Report"
+                scrolling="no"
+                tabIndex="-1"
+              />
+            </div>
+            {/* Clean gradient fade into the CTA overlay */}
             <div className="report-preview__fade"/>
 
             {/* CTA overlay */}
@@ -43,7 +54,7 @@ export default function ReportPreview() {
                 Interactive report with 20 blast paths, CSI scorecard, and intervention matrix
               </p>
               <a
-                href="https://github.com/oliver-clawd/brf-report"
+                href={REPORT_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-primary"
