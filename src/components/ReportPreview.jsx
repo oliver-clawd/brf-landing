@@ -1,8 +1,7 @@
 import './ReportPreview.css';
 import reportImg from '../assets/report-preview.jpg';
 
-// Update to the deployed report URL before going live
-const REPORT_URL = 'https://brf-report.secure-stack-consulting.workers.dev';
+const REPORT_URL = '/blast-radius-framework/report/';
 
 export default function ReportPreview() {
   return (
@@ -26,7 +25,7 @@ export default function ReportPreview() {
             </div>
             <div className="report-preview__url">
               <span className="report-preview__url-icon">🔒</span>
-              brf-report.secure-stack.consulting
+              secure-stack-consulting.com/blast-radius-framework/report
             </div>
           </div>
 
