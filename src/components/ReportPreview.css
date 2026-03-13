@@ -68,11 +68,18 @@
 /* The iframe renders the full report at actual resolution — no JPEG artifacts */
 .report-preview__iframe {
   width: 1280px;           /* full report viewport width */
-  height: 900px;           /* how much vertical content to show */
+  height: 2600px;          /* render deep enough to reach topology section */
   border: none;
   display: block;
   transform-origin: top left;
-  transform: scale(var(--preview-scale, 0.9375)); /* 1200/1280 */
+  /*
+   * translateY scrolls the rendered page so the topology graph (~1550px from
+   * the report top) appears near the top of the preview crop window.
+   * -1550 * scale keeps the offset proportional at any container width.
+   */
+  transform:
+    translateY(calc(-1550px * var(--preview-scale, 0.9375)))
+    scale(var(--preview-scale, 0.9375));
   pointer-events: none;    /* disable interaction in the preview */
 }
 
