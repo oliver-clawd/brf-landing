@@ -14,10 +14,6 @@
     {
       "pattern": "secure-stack-consulting.com/blast-radius-framework*",
       "zone_name": "secure-stack-consulting.com"
-    },
-    {
-      "pattern": "secure-stack-consulting.com",
-      "zone_name": "secure-stack-consulting.com"
     }
   ]
 }
