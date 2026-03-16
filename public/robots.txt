@@ -1,0 +1,33 @@
+User-agent: *
+Allow: /
+
+# Allow AI crawlers explicitly
+# OpenAI / ChatGPT
+User-agent: GPTBot
+Allow: /
+
+# Anthropic / Claude
+User-agent: ClaudeBot
+Allow: /
+
+# Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+
+# Google Gemini
+User-agent: Google-Extended
+Allow: /
+
+# Amazon Alexa / Amazonbot
+User-agent: Amazonbot
+Allow: /
+
+# Meta AI
+User-agent: meta-externalagent
+Allow: /
+
+# Apple
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://secure-stack-consulting.com/sitemap.xml

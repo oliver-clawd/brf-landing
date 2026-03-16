@@ -21,7 +21,7 @@ export default function Footer() {
           </div>
           <div className="footer__col">
             <div className="footer__col-title">Contact</div>
-            <a href="mailto:hello@secure-stack.consulting">Email us</a>
+            <a href="mailto:oliver.clawd@secure-stack-consulting.com">Email us</a>
             <a href="#contact">Get Assessment</a>
           </div>
         </div>
