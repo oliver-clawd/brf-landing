@@ -39,7 +39,7 @@ const BOT_HTML = `<!doctype html>
   <meta property="og:url" content="https://secure-stack-consulting.com/blast-radius-framework/" />
   <meta property="og:title" content="Blast Radius Framework — Secure Stack Consulting" />
   <meta property="og:description" content="A structured AWS security assessment that models every propagation path, scores your containment strength, and gives you a sequenced plan to compress exposure." />
-  <meta property="og:image" content="https://secure-stack-consulting.com/blast-radius-framework/og-image.png" />
+  <meta property="og:image" content="https://secure-stack-consulting.com/blast-radius-framework/og-image.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="canonical" href="https://secure-stack-consulting.com/blast-radius-framework/" />
   <script type="application/ld+json">
