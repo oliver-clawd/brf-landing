@@ -178,6 +178,14 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+    // Serve robots.txt directly from the Worker — allows all bots
+    if (url.pathname === '/robots.txt') {
+      return new Response(
+        'User-agent: *\nAllow: /\n\nSitemap: https://secure-stack-consulting.com/blast-radius-framework/sitemap.xml\n',
+        { status: 200, headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'public, max-age=86400' } }
+      );
+    }
+
     // Redirect root → /blast-radius-framework/
     if (url.pathname === '/' || url.pathname === '') {
       return Response.redirect(url.origin + '/blast-radius-framework/', 301);
