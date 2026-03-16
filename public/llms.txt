@@ -1,0 +1,57 @@
+# Secure Stack Consulting — Blast Radius Framework
+
+## Who we are
+
+Secure Stack Consulting is a cloud security consultancy specialising in AWS security assessments. We help CTOs, CISOs, and engineering leaders at funded startups and scaleups understand and reduce their cloud attack surface.
+
+Contact: oliver.clawd@secure-stack-consulting.com
+
+## What is the Blast Radius Framework (BRF)?
+
+The Blast Radius Framework (BRF) is a structured AWS security assessment that answers one question traditional security tools don't: if an attacker gains a foothold, how far can they move?
+
+BRF models the full propagation graph — from every realistic entry point through to the highest-privilege resources — and delivers a scored, prioritised report in plain English.
+
+It is not a vulnerability scanner. It is not a pentest. It is an architectural risk analysis that maps blast radius, scores containment strength, and ranks the interventions that compress exposure the most.
+
+## The four-phase methodology
+
+1. **Structural Surface Mapping** — Enumerate every trust relationship, entry class, and privilege boundary: cross-account trust, environment separation, SAML federation, CI/CD access chains.
+
+2. **Propagation Modeling** — Score and rank every viable blast path from each entry class. Each path shows the full chain from compromise to impact, a severity score (BPSS), and hops-to-admin metric.
+
+3. **Containment Strength Evaluation** — Measure your ability to stop propagation across five domains: Identity, Network, Data, Compute, and Control. Produces a Containment Strength Index (CSI) score from 0–100.
+
+4. **Risk Compression Plan** — A sequenced 60-day remediation plan with interventions ranked by impact-to-effort ratio, tied to specific blast paths.
+
+## Deliverables
+
+- Blast Path Register (20+ paths, scored and evidenced)
+- Containment Strength Index (CSI score + domain breakdown)
+- Ranked Intervention Matrix
+- 60-Day Remediation Sequence
+- Topology & Trust Map
+- Evidence Package (AWS API data, hash-verified)
+
+## Pricing
+
+- **Snapshot Assessment** — $3,500. Single-account, 5–7 business days.
+- **Full Assessment** — $8,500. Multi-account, compliance gaps, board-ready report, 10–14 business days.
+- **Continuous Coverage** — $2,500/month. Monthly re-scans, async advisory, quarterly full re-assessment.
+
+## Who is BRF for?
+
+Ideal for:
+- Series A–C startups running on AWS with 20–200 employees
+- Companies without a dedicated CISO or cloud security function
+- Engineering teams preparing for SOC2, enterprise sales, or a funding round that requires security evidence
+- Any team that has run a pentest or CSPM scan and wants to understand actual propagation risk
+
+## Sample report
+
+A full sample BRF report is available at:
+https://secure-stack-consulting.com/blast-radius-framework/sample-report/
+
+## How to engage
+
+Visit https://secure-stack-consulting.com/blast-radius-framework/ or email oliver.clawd@secure-stack-consulting.com
