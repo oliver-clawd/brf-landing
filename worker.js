@@ -1,4 +1,54 @@
-// Bot user agent detection
+// ─── Security headers added to all responses ────────────────────────────────
+// CSP allows inline scripts (required for React + JSON-LD) and self-hosted assets.
+// frame-ancestors 'none' prevents clickjacking.
+const SECURITY_HEADERS = {
+  'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+  'Content-Security-Policy': [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline'",   // React + JSON-LD inline scripts
+    "style-src 'self' 'unsafe-inline'",    // Inline styles from React
+    "img-src 'self' data: https:",         // og-image + SVGs
+    "font-src 'self'",
+    "connect-src 'self' https://api.resend.com",
+    "frame-ancestors 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+  ].join('; '),
+};
+
+function addSecurityHeaders(response) {
+  const res = new Response(response.body, response);
+  for (const [key, value] of Object.entries(SECURITY_HEADERS)) {
+    res.headers.set(key, value);
+  }
+  return res;
+}
+
+// ─── Simple in-memory rate limiter for contact form ─────────────────────────
+// Workers are stateless per-isolate so this resets on cold start, but still
+// provides meaningful protection against burst abuse within a single isolate.
+// For persistent rate limiting, replace with Cloudflare KV or Durable Objects.
+const contactRateLimit = new Map(); // ip → { count, resetAt }
+const RATE_LIMIT_MAX = 5;           // max submissions per window
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  const entry = contactRateLimit.get(ip);
+  if (!entry || now > entry.resetAt) {
+    contactRateLimit.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+  if (entry.count >= RATE_LIMIT_MAX) return true;
+  entry.count++;
+  return false;
+}
+
+// ─── Bot user agent detection ────────────────────────────────────────────────
 const BOT_PATTERNS = [
   /GPTBot/i,
   /ChatGPT-User/i,
@@ -25,9 +75,7 @@ function isBot(userAgent) {
   return BOT_PATTERNS.some(p => p.test(userAgent));
 }
 
-// Static pre-rendered HTML served to bots — identical content to what React renders,
-// but as plain HTML so crawlers get full text without executing JS.
-// React hydrates normally for real users (this markup is compatible with React hydration).
+// ─── Static pre-rendered HTML for bots ──────────────────────────────────────
 const BOT_HTML = `<!doctype html>
 <html lang="en">
 <head>
@@ -132,19 +180,19 @@ const BOT_HTML = `<!doctype html>
       <ol>
         <li>
           <h3>01 — Structural Surface Mapping</h3>
-          <p>Map every trust relationship, entry class, and privilege boundary in your account. Cross-account trust, environment separation, SAML federation, and CI/CD access chains — fully enumerated and risk-scored.</p>
+          <p>Map every trust relationship, entry class, and privilege boundary in your account.</p>
         </li>
         <li>
           <h3>02 — Propagation Modeling</h3>
-          <p>Score and rank every viable blast path from each entry class. Each path shows the full propagation chain, a BPSS severity score, hops-to-admin metric, and linked evidence.</p>
+          <p>Score and rank every viable blast path from each entry class.</p>
         </li>
         <li>
           <h3>03 — Containment Strength Evaluation</h3>
-          <p>Quantify your ability to stop propagation across five domains. The Containment Strength Index (CSI) gives you a single score — and a breakdown that shows exactly where to invest.</p>
+          <p>Quantify your ability to stop propagation across five domains.</p>
         </li>
         <li>
           <h3>04 — Risk Compression Plan</h3>
-          <p>Interventions ranked by impact-to-effort ratio, not arbitrary priority. A sequenced 60-day remediation plan, tied to specific blast paths, that reduces the most risk for the least work.</p>
+          <p>Interventions ranked by impact-to-effort ratio. A sequenced 60-day remediation plan.</p>
         </li>
       </ol>
     </section>
@@ -152,18 +200,17 @@ const BOT_HTML = `<!doctype html>
     <section id="deliverables">
       <h2>One engagement. Six deliverables.</h2>
       <ul>
-        <li><strong>Blast Path Register</strong> — 20+ propagation paths, each scored by severity band and entry class. Every path links to evidence, affected resources, and the interventions that address it.</li>
-        <li><strong>Containment Strength Index</strong> — A 0–100 score across five domains: Identity, Network, Data, Compute, and Control. Shows where your containment is holding and where it breaks down.</li>
-        <li><strong>Ranked Intervention Matrix</strong> — Every control ranked by impact-to-effort ratio, with dependency chains and projected score impact.</li>
-        <li><strong>60-Day Remediation Sequence</strong> — A week-by-week plan tied to specific blast paths and interventions.</li>
-        <li><strong>Topology &amp; Trust Map</strong> — Graph of every node, trust relationship, and privilege boundary.</li>
-        <li><strong>Evidence Package</strong> — Every finding backed by AWS API data — IAM GetRolePolicy, CloudTrail AssumeRole events, VPC flow logs. Hash-verified and timestamped.</li>
+        <li><strong>Blast Path Register</strong> — 20+ propagation paths scored and evidenced.</li>
+        <li><strong>Containment Strength Index</strong> — 0–100 score across Identity, Network, Data, Compute, Control.</li>
+        <li><strong>Ranked Intervention Matrix</strong> — Controls ranked by impact-to-effort ratio.</li>
+        <li><strong>60-Day Remediation Sequence</strong> — Week-by-week plan tied to blast paths.</li>
+        <li><strong>Topology &amp; Trust Map</strong> — Every node, trust relationship, and privilege boundary.</li>
+        <li><strong>Evidence Package</strong> — AWS API data, hash-verified and timestamped.</li>
       </ul>
     </section>
 
     <section id="contact">
       <h2>Ready to measure your blast radius?</h2>
-      <p>A BRF engagement typically runs 2–3 weeks for a single AWS account. You get the interactive report, evidence package, and a working session to walk through findings and priorities.</p>
       <p>Contact: <a href="mailto:oliver.clawd@secure-stack-consulting.com">oliver.clawd@secure-stack-consulting.com</a></p>
     </section>
   </main>
@@ -174,16 +221,17 @@ const BOT_HTML = `<!doctype html>
 </body>
 </html>`;
 
+// ─── Main handler ────────────────────────────────────────────────────────────
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // Serve robots.txt directly from the Worker — allows all bots
+    // Serve robots.txt directly — allows all bots, no origin needed
     if (url.pathname === '/robots.txt') {
-      return new Response(
+      return addSecurityHeaders(new Response(
         'User-agent: *\nAllow: /\n\nSitemap: https://secure-stack-consulting.com/blast-radius-framework/sitemap.xml\n',
         { status: 200, headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'public, max-age=86400' } }
-      );
+      ));
     }
 
     // Redirect root → /blast-radius-framework/
@@ -198,31 +246,51 @@ export default {
 
     // Serve pre-rendered HTML to bots hitting the main page
     const userAgent = request.headers.get('User-Agent') || '';
-    const isBotRequest = isBot(userAgent);
     const isMainPage = url.pathname === '/blast-radius-framework' || url.pathname === '/blast-radius-framework/';
 
-    if (isBotRequest && isMainPage) {
-      return new Response(BOT_HTML, {
+    if (isBot(userAgent) && isMainPage) {
+      return addSecurityHeaders(new Response(BOT_HTML, {
         status: 200,
         headers: {
           'Content-Type': 'text/html; charset=utf-8',
           'Cache-Control': 'public, max-age=3600',
           'X-Robots-Tag': 'index, follow',
         },
-      });
+      }));
     }
 
-    // Strip /blast-radius-framework prefix so ASSETS can serve from dist/
+    // Serve static assets — add security headers to HTML responses
     url.pathname = url.pathname.replace(/^\/blast-radius-framework/, '') || '/';
-    return env.ASSETS.fetch(new Request(url.toString(), request));
+    const response = await env.ASSETS.fetch(new Request(url.toString(), request));
+    const contentType = response.headers.get('Content-Type') || '';
+    if (contentType.includes('text/html')) {
+      return addSecurityHeaders(response);
+    }
+    return response;
   },
 };
 
+// ─── Contact form handler ────────────────────────────────────────────────────
 async function handleContact(request, env) {
   const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': 'https://secure-stack-consulting.com',
     'Content-Type': 'application/json',
+    'Vary': 'Origin',
   };
+
+  // Handle CORS preflight
+  if (request.method === 'OPTIONS') {
+    return new Response(null, { status: 204, headers: corsHeaders });
+  }
+
+  // Rate limiting by IP
+  const ip = request.headers.get('CF-Connecting-IP') || request.headers.get('X-Forwarded-For') || 'unknown';
+  if (isRateLimited(ip)) {
+    return new Response(
+      JSON.stringify({ error: 'Too many requests. Please try again later.' }),
+      { status: 429, headers: { ...corsHeaders, 'Retry-After': '3600' } }
+    );
+  }
 
   try {
     const { name, email, scope, message } = await request.json();
@@ -231,11 +299,22 @@ async function handleContact(request, env) {
       return new Response(JSON.stringify({ error: 'Name and email are required.' }), { status: 400, headers: corsHeaders });
     }
 
+    // Basic email format validation
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return new Response(JSON.stringify({ error: 'Invalid email address.' }), { status: 400, headers: corsHeaders });
+    }
+
+    // Truncate inputs to prevent abuse
+    const safeName = String(name).slice(0, 200);
+    const safeEmail = String(email).slice(0, 320);
+    const safeScope = scope ? String(scope).slice(0, 500) : null;
+    const safeMessage = message ? String(message).slice(0, 2000) : null;
+
     const body = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      scope ? `AWS scope: ${scope}` : null,
-      message ? `\nMessage:\n${message}` : null,
+      `Name: ${safeName}`,
+      `Email: ${safeEmail}`,
+      safeScope ? `AWS scope: ${safeScope}` : null,
+      safeMessage ? `\nMessage:\n${safeMessage}` : null,
     ].filter(Boolean).join('\n');
 
     const res = await fetch('https://api.resend.com/emails', {
@@ -247,8 +326,8 @@ async function handleContact(request, env) {
       body: JSON.stringify({
         from: 'BRF Contact Form <noreply@secure-stack-consulting.com>',
         to: ['oliver.clawd@secure-stack-consulting.com'],
-        reply_to: email,
-        subject: `BRF Inquiry — ${name}`,
+        reply_to: safeEmail,
+        subject: `BRF Inquiry — ${safeName}`,
         text: body,
       }),
     });
