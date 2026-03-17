@@ -1,4 +1,54 @@
-// Bot user agent detection
+// ─── Security headers added to all responses ────────────────────────────────
+// CSP allows inline scripts (required for React + JSON-LD) and self-hosted assets.
+// frame-ancestors 'none' prevents clickjacking.
+const SECURITY_HEADERS = {
+  'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+  'Content-Security-Policy': [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline'",   // React + JSON-LD inline scripts
+    "style-src 'self' 'unsafe-inline'",    // Inline styles from React
+    "img-src 'self' data: https:",         // og-image + SVGs
+    "font-src 'self'",
+    "connect-src 'self' https://api.resend.com",
+    "frame-ancestors 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+  ].join('; '),
+};
+
+function addSecurityHeaders(response) {
+  const res = new Response(response.body, response);
+  for (const [key, value] of Object.entries(SECURITY_HEADERS)) {
+    res.headers.set(key, value);
+  }
+  return res;
+}
+
+// ─── Simple in-memory rate limiter for contact form ─────────────────────────
+// Workers are stateless per-isolate so this resets on cold start, but still
+// provides meaningful protection against burst abuse within a single isolate.
+// For persistent rate limiting, replace with Cloudflare KV or Durable Objects.
+const contactRateLimit = new Map(); // ip → { count, resetAt }
+const RATE_LIMIT_MAX = 5;           // max submissions per window
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  const entry = contactRateLimit.get(ip);
+  if (!entry || now > entry.resetAt) {
+    contactRateLimit.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+  if (entry.count >= RATE_LIMIT_MAX) return true;
+  entry.count++;
+  return false;
+}
+
+// ─── Bot user agent detection ────────────────────────────────────────────────
 const BOT_PATTERNS = [
   /GPTBot/i,
   /ChatGPT-User/i,
@@ -25,9 +75,7 @@ function isBot(userAgent) {
   return BOT_PATTERNS.some(p => p.test(userAgent));
 }
 
-// Static pre-rendered HTML served to bots — identical content to what React renders,
-// but as plain HTML so crawlers get full text without executing JS.
-// React hydrates normally for real users (this markup is compatible with React hydration).
+// ─── Static pre-rendered HTML for bots ──────────────────────────────────────
 const BOT_HTML = `<!doctype html>
 <html lang="en">
 <head>
@@ -174,16 +222,17 @@ const BOT_HTML = `<!doctype html>
 </body>
 </html>`;
 
+// ─── Main handler ────────────────────────────────────────────────────────────
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // Serve robots.txt directly from the Worker — allows all bots
+    // Serve robots.txt directly — allows all bots, no origin needed
     if (url.pathname === '/robots.txt') {
-      return new Response(
+      return addSecurityHeaders(new Response(
         'User-agent: *\nAllow: /\n\nSitemap: https://secure-stack-consulting.com/blast-radius-framework/sitemap.xml\n',
         { status: 200, headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'public, max-age=86400' } }
-      );
+      ));
     }
 
     // Redirect root → /blast-radius-framework/
@@ -198,31 +247,51 @@ export default {
 
     // Serve pre-rendered HTML to bots hitting the main page
     const userAgent = request.headers.get('User-Agent') || '';
-    const isBotRequest = isBot(userAgent);
     const isMainPage = url.pathname === '/blast-radius-framework' || url.pathname === '/blast-radius-framework/';
 
-    if (isBotRequest && isMainPage) {
-      return new Response(BOT_HTML, {
+    if (isBot(userAgent) && isMainPage) {
+      return addSecurityHeaders(new Response(BOT_HTML, {
         status: 200,
         headers: {
           'Content-Type': 'text/html; charset=utf-8',
           'Cache-Control': 'public, max-age=3600',
           'X-Robots-Tag': 'index, follow',
         },
-      });
+      }));
     }
 
-    // Strip /blast-radius-framework prefix so ASSETS can serve from dist/
+    // Serve static assets — add security headers to HTML responses
     url.pathname = url.pathname.replace(/^\/blast-radius-framework/, '') || '/';
-    return env.ASSETS.fetch(new Request(url.toString(), request));
+    const response = await env.ASSETS.fetch(new Request(url.toString(), request));
+    const contentType = response.headers.get('Content-Type') || '';
+    if (contentType.includes('text/html')) {
+      return addSecurityHeaders(response);
+    }
+    return response;
   },
 };
 
+// ─── Contact form handler ────────────────────────────────────────────────────
 async function handleContact(request, env) {
   const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': 'https://secure-stack-consulting.com',
     'Content-Type': 'application/json',
+    'Vary': 'Origin',
   };
+
+  // Handle CORS preflight
+  if (request.method === 'OPTIONS') {
+    return new Response(null, { status: 204, headers: corsHeaders });
+  }
+
+  // Rate limiting by IP
+  const ip = request.headers.get('CF-Connecting-IP') || request.headers.get('X-Forwarded-For') || 'unknown';
+  if (isRateLimited(ip)) {
+    return new Response(
+      JSON.stringify({ error: 'Too many requests. Please try again later.' }),
+      { status: 429, headers: { ...corsHeaders, 'Retry-After': '3600' } }
+    );
+  }
 
   try {
     const { name, email, scope, message } = await request.json();
@@ -231,11 +300,22 @@ async function handleContact(request, env) {
       return new Response(JSON.stringify({ error: 'Name and email are required.' }), { status: 400, headers: corsHeaders });
     }
 
+    // Basic email format validation
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return new Response(JSON.stringify({ error: 'Invalid email address.' }), { status: 400, headers: corsHeaders });
+    }
+
+    // Truncate inputs to prevent abuse
+    const safeName = String(name).slice(0, 200);
+    const safeEmail = String(email).slice(0, 320);
+    const safeScope = scope ? String(scope).slice(0, 500) : null;
+    const safeMessage = message ? String(message).slice(0, 2000) : null;
+
     const body = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      scope ? `AWS scope: ${scope}` : null,
-      message ? `\nMessage:\n${message}` : null,
+      `Name: ${safeName}`,
+      `Email: ${safeEmail}`,
+      safeScope ? `AWS scope: ${safeScope}` : null,
+      safeMessage ? `\nMessage:\n${safeMessage}` : null,
     ].filter(Boolean).join('\n');
 
     const res = await fetch('https://api.resend.com/emails', {
@@ -247,8 +327,8 @@ async function handleContact(request, env) {
       body: JSON.stringify({
         from: 'BRF Contact Form <noreply@secure-stack-consulting.com>',
         to: ['oliver.clawd@secure-stack-consulting.com'],
-        reply_to: email,
-        subject: `BRF Inquiry — ${name}`,
+        reply_to: safeEmail,
+        subject: `BRF Inquiry — ${safeName}`,
         text: body,
       }),
     });
