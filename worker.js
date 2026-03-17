@@ -180,19 +180,19 @@ const BOT_HTML = `<!doctype html>
       <ol>
         <li>
           <h3>01 — Structural Surface Mapping</h3>
-          <p>Map every trust relationship, entry class, and privilege boundary in your account.</p>
+          <p>Map every trust relationship, entry class, and privilege boundary in your account. Cross-account trust, environment separation, SAML federation, and CI/CD access chains — fully enumerated and risk-scored.</p>
         </li>
         <li>
           <h3>02 — Propagation Modeling</h3>
-          <p>Score and rank every viable blast path from each entry class.</p>
+          <p>Score and rank every viable blast path from each entry class. Each path shows the full propagation chain, a BPSS severity score, hops-to-admin metric, and linked evidence.</p>
         </li>
         <li>
           <h3>03 — Containment Strength Evaluation</h3>
-          <p>Quantify your ability to stop propagation across five domains.</p>
+          <p>Quantify your ability to stop propagation across five domains. The Containment Strength Index (CSI) gives you a single score — and a breakdown that shows exactly where to invest.</p>
         </li>
         <li>
           <h3>04 — Risk Compression Plan</h3>
-          <p>Interventions ranked by impact-to-effort ratio. A sequenced 60-day remediation plan.</p>
+          <p>Interventions ranked by impact-to-effort ratio, not arbitrary priority. A sequenced 60-day remediation plan, tied to specific blast paths, that reduces the most risk for the least work.</p>
         </li>
       </ol>
     </section>
@@ -200,17 +200,18 @@ const BOT_HTML = `<!doctype html>
     <section id="deliverables">
       <h2>One engagement. Six deliverables.</h2>
       <ul>
-        <li><strong>Blast Path Register</strong> — 20+ propagation paths scored and evidenced.</li>
-        <li><strong>Containment Strength Index</strong> — 0–100 score across Identity, Network, Data, Compute, Control.</li>
-        <li><strong>Ranked Intervention Matrix</strong> — Controls ranked by impact-to-effort ratio.</li>
-        <li><strong>60-Day Remediation Sequence</strong> — Week-by-week plan tied to blast paths.</li>
-        <li><strong>Topology &amp; Trust Map</strong> — Every node, trust relationship, and privilege boundary.</li>
-        <li><strong>Evidence Package</strong> — AWS API data, hash-verified and timestamped.</li>
+        <li><strong>Blast Path Register</strong> — 20+ propagation paths, each scored by severity band and entry class. Every path links to evidence, affected resources, and the interventions that address it.</li>
+        <li><strong>Containment Strength Index</strong> — A 0–100 score across five domains: Identity, Network, Data, Compute, and Control. Shows where your containment is holding and where it breaks down.</li>
+        <li><strong>Ranked Intervention Matrix</strong> — Every control ranked by impact-to-effort ratio, with dependency chains and projected score impact.</li>
+        <li><strong>60-Day Remediation Sequence</strong> — A week-by-week plan tied to specific blast paths and interventions.</li>
+        <li><strong>Topology &amp; Trust Map</strong> — Graph of every node, trust relationship, and privilege boundary.</li>
+        <li><strong>Evidence Package</strong> — Every finding backed by AWS API data — IAM GetRolePolicy, CloudTrail AssumeRole events, VPC flow logs. Hash-verified and timestamped.</li>
       </ul>
     </section>
 
     <section id="contact">
       <h2>Ready to measure your blast radius?</h2>
+      <p>A BRF engagement typically runs 2–3 weeks for a single AWS account. You get the interactive report, evidence package, and a working session to walk through findings and priorities.</p>
       <p>Contact: <a href="mailto:oliver.clawd@secure-stack-consulting.com">oliver.clawd@secure-stack-consulting.com</a></p>
     </section>
   </main>
