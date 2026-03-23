@@ -35,9 +35,9 @@ It is not a vulnerability scanner. It is not a pentest. It is an architectural r
 
 ## Pricing
 
-- **Snapshot Assessment** — $3,500. Single-account, 5–7 business days.
-- **Full Assessment** — $8,500. Multi-account, compliance gaps, board-ready report, 10–14 business days.
-- **Continuous Coverage** — $2,500/month. Monthly re-scans, async advisory, quarterly full re-assessment.
+- **Snapshot Assessment** — €3,500. Single AWS account evaluation.
+- **Full Assessment** — €15,000. Organisation-level AWS evaluation, includes up to 5 accounts; +€2,500 per additional account.
+- **Continuous Coverage** — €3,500/month (3-month minimum). Continuous monitoring, includes up to 5 accounts; +€750/month per additional account. Requires a Full Assessment first.
 
 ## Who is BRF for?
 
