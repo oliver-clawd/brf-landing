@@ -111,9 +111,9 @@ const BOT_HTML = `<!doctype html>
         "description": "A structured AWS security assessment that maps every propagation path from initial compromise to crown jewel impact. BRF scores your Containment Strength Index across five domains and delivers a sequenced 60-day remediation plan.",
         "serviceType": "AWS Cloud Security Assessment",
         "offers": [
-          { "@type": "Offer", "name": "Snapshot Assessment", "price": "3500", "priceCurrency": "USD" },
-          { "@type": "Offer", "name": "Full Assessment", "price": "8500", "priceCurrency": "USD" },
-          { "@type": "Offer", "name": "Continuous Coverage", "price": "2500", "priceCurrency": "USD" }
+          { "@type": "Offer", "name": "Snapshot Assessment", "price": "3500", "priceCurrency": "EUR" },
+          { "@type": "Offer", "name": "Full Assessment", "price": "15000", "priceCurrency": "EUR" },
+          { "@type": "Offer", "name": "Continuous Coverage", "price": "3500", "priceCurrency": "EUR" }
         ]
       }
     ]
